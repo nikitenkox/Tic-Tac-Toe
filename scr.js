@@ -2,6 +2,7 @@
 
 var arrayField = [];
 var field = document.getElementsByClassName('field')[0];
+var formedItems = document.getElementsByClassName('item');
 var body = document.body;
 var item;
 var pos;
@@ -9,7 +10,7 @@ var user;
 var count = 0;
 var clicked;
 
-// создаем игровое поле
+// создаем игровое поле и одномерный array игры
 function renderField(size) {
     for (var i = 0; i < size; i++) {
         item = document.createElement('div');
@@ -22,17 +23,10 @@ function renderField(size) {
 }
 
 
-// items
-
-var formedItems = document.getElementsByClassName('item');
-
-//items
-
-
+// создаем поле
 renderField(9);
 
 // делаем ход
-
 function placeMark(mark, b) {
     if (arrayField[mark] == 1) {
         arrayField.splice(mark, 1, 'x');
@@ -43,19 +37,12 @@ function placeMark(mark, b) {
                 b = false;
             }
         }
-    } 
-    count = count + 2;
+        count = count + 2;
+    }
 }
 
 
-/*placeMark(0);
-placeMark(3);
-placeMark(6);
-*/
-
-// проверяем наличие победителя
-
-
+// определяем индекс кликнутой ячейки
 for (var u = 0; u < formedItems.length; u++) {
     formedItems[u].id = u;
     formedItems[u].addEventListener('click', function(event) {
@@ -64,29 +51,31 @@ for (var u = 0; u < formedItems.length; u++) {
 }
 
 
-
+// делаем делегацию событий при клике на ячейку
 body.addEventListener('click', function(event) {
-    //alert('x = ' + (event.pageX - field.offsetLeft) + '; y = ' + (event.pageY - field.offsetTop));
-    //alert(getComputedStyle(field).width);
     if (isLastMove(count)) {
         placeMark(arrayField.indexOf(1), false);
     }
     if (event.target.tagName == 'DIV') {
         placeMark(clicked, true);
-        for (var k = 0; k < arrayField.length; k++) {
-            if (arrayField[k] !== 1) {
-                formedItems[k].innerHTML = arrayField[k];
-            }
-
-        }
+        renderView(arrayField);
     }
     checkVictory(arrayField);
 });
 
 
+// заполняем ячейки
+function renderView(arr) {
+  for (var k = 0; k < arr.length; k++) {
+      if (arr[k] !== 1) {
+          formedItems[k].innerHTML = arr[k];
+      }
+  }
+}
 
+// проверяем, остался один ход, или нет
 function isLastMove(c) {
-    if (c == arrayField.length-1) {
+    if (c >= arrayField.length-1) {
         return true;
     }
     else {
@@ -94,7 +83,7 @@ function isLastMove(c) {
     }
 }
 
-
+// проверка победителя
 function checkVictory(arr) {
     var uWin = arr.toString().search(/x,x,x/);
     var cWin = arr.toString().search(/0,0,0/);
