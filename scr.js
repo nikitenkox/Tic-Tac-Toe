@@ -1,9 +1,9 @@
 'use strict';
 
 var arrayField = [];
-var field = document.getElementsByClassName('field')[0];
-var formedItems = document.getElementsByClassName('item');
-var form = document.beginGame;
+var field = document.getElementsByClassName('field')[0]; // TODO: проще document.querySelector('.field'), найдет первый элемент по запрошенному селектору
+var formedItems = document.getElementsByClassName('item'); // TODO: А ведь в этот момент этих ячеек в DOM еще нет.
+var form = document.beginGame; // TODO: не сказал бы, что это хорошая практика. Лучше уже document.getElementsById.
 var body = document.body;
 var finisBox = document.getElementsByClassName('finished')[0];
 var item;
@@ -19,6 +19,14 @@ field.style.display = 'none';
 
 //начало игры
 function begin() {
+    /**
+    * TODO: Хранить настройки и состояние игры в виде обьекта game = {
+    *   fieldSize: 3,
+    *   marksForWin: 3,
+    *   fieldState: [....],
+    *   ...
+    * }
+    */
     // создаем поле
     renderField(document.beginGame.size.value);
     //указываем количество клеточек для победы
@@ -29,6 +37,8 @@ function begin() {
     // определяем индекс кликнутой ячейки
     for (var u = 0; u < formedItems.length; u++) {
         formedItems[u].id = u;
+
+        // TODO: Ересь! У тебя уже есть обработчик с делегированием - вноси это туда
         formedItems[u].addEventListener('click', function(event) {
             clicked = this.id;
         })
@@ -96,6 +106,11 @@ function isLastMove(c) {
         return false;
     }
 }
+
+/**
+ * TODO: Эта проверка на победителя интересна, но не динамична и очень зависит от конкретной реализации метода toString() и search()
+ * Переделать на действительно алгоримическое определение победителя. Используй циклы и логику
+ */
 
 //определяем количество ячеек для победы
 function squaresForWin(n) {
