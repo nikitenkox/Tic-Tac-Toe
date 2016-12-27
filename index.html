@@ -3,43 +3,25 @@
   <head>
     <meta charset="utf-8">
     <title>game</title>
+    <link rel="stylesheet" href="style.css" media="screen" title="no title">
   </head>
-  <style media="screen">
-  * {
-    margin: 0px;
-    padding: 0px;
-
-  }
-    tr, td {
-      border: 1px solid orange;
-      width: 100px;
-      height: 100px;
-    }
-    .field {
-        background: orange;
-        width: 306px;
-        height: 306px;
-        border: 0px;
-        margin-left: 50px;
-    }
-    .item {
-        background: gray;
-        width: 100px;
-        text-align: center;
-        vertical-align: bottom;
-        color: white;
-        line-height: 100px;
-        height: 100px;
-        display: inline-block;
-        float: left;
-        border: 1px solid darkblue;
-    }
-  </style>
   <body>
     <h1>Play</h1>
-
+    <form name='beginGame' class="" action="" method="post">
+        <h4>Количество ячеек в поле игры</h4>
+        <input type="text" name="size" value="">
+        <br>
+        <h4>Количество ячеек в строку(колонку) для победы</h4>
+        <input type="text" name="winCount" value="">
+        <br>
+        <input type="button" name="name" value="Начать" onclick="begin()">
+    </form>
     <div class="field">
 
+    </div>
+    <div class="finished">
+        <h1>The winner is </h1>
+        <button type="button" name="button" onclick="reload()">new game</button>
     </div>
     <script src="scr.js" charset="utf-8"></script>
   </body>
