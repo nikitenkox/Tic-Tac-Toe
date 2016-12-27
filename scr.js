@@ -8,10 +8,39 @@ var item;
 var pos;
 var user;
 var count = 0;
+var checkingArray = [];
 var clicked;
+var sizeLength;
+var sqWinCount;
+var x;
+
+//начало игры
+function begin() {
+    x = document.beginGame.size.value;
+    var y = document.beginGame.winCount.value;
+    window.location.href = 'index.html';
+
+}
 
 // создаем игровое поле и одномерный array игры
 function renderField(size) {
+    sizeLength = Math.sqrt(size);
+    field.style.width = Math.sqrt(size)*102 + 'px';
+    for (var i = 0; i < size; i++) {
+        item = document.createElement('div');
+        item.classList.add('item');
+        field.appendChild(item);
+    }
+    for (var j = 0; j < size; j++) {
+        arrayField.push(1);
+    }
+}
+
+
+// создаем игровое поле и одномерный array игры
+function renderField(size) {
+    sizeLength = Math.sqrt(size);
+    field.style.width = Math.sqrt(size)*102 + 'px';
     for (var i = 0; i < size; i++) {
         item = document.createElement('div');
         item.classList.add('item');
@@ -24,7 +53,8 @@ function renderField(size) {
 
 
 // создаем поле
-renderField(9);
+alert(x)
+renderField(16);
 
 // делаем ход
 function placeMark(mark, b) {
@@ -40,6 +70,7 @@ function placeMark(mark, b) {
         count = count + 2;
     }
 }
+
 
 
 // определяем индекс кликнутой ячейки
@@ -83,15 +114,30 @@ function isLastMove(c) {
     }
 }
 
+//определяем количество ячеек для победы
+function squaresForWin(n) {
+    sqWinCount = n;
+    checkingArray.push(new RegExp('x,'.repeat(n)));
+    checkingArray.push(new RegExp('0,'.repeat(n)));
+    var t = 'x.' + '{' + (sizeLength * 2 - 1) + '}';
+    t = t.repeat(n-1) + 'x';
+    checkingArray.push(new RegExp(t));
+    t = '0.' + '{' + (sizeLength * 2 - 1) + '}';
+    t = t.repeat(n-1) + '0';
+    checkingArray.push(new RegExp(t));
+}
+squaresForWin(4);
+
+
 // проверка победителя
 function checkVictory(arr) {
-    var uWin = arr.toString().search(/x,x,x/);
-    var cWin = arr.toString().search(/0,0,0/);
-    var uWin1 = arr.join().search(/x.{5}x.{5}x/);
-    var cWin1 = arr.toString().search(/0.{5}0.{5}0/);
-    if ((uWin > -1) && (uWin % 3 == 0) || uWin1 > -1) {
+    var uWin = arr.toString().search(checkingArray[0]);
+    var cWin = arr.toString().search(checkingArray[1]);
+    var uWin1 = arr.toString().search(checkingArray[2]);
+    var cWin1 = arr.toString().search(checkingArray[3]);
+    if ((uWin > -1) && (uWin % (sizeLength * 2) < (sizeLength * 2 - (sqWinCount*2-1))) || uWin1 > -1 || uWin2 > -1) {
         alert('user wins');
-    } else if ((cWin > -1) && (cWin % 3 == 0) || cWin1 > -1) {
+    } else if ((cWin > -1) && (cWin % (sizeLength * 2) < (sizeLength * 2 - (sqWinCount*2-1))) || cWin1 > -1 || cWin2 > -1) {
         alert('program wins');
     }
     else if (count > arrayField.length-1) {
