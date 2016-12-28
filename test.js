@@ -76,39 +76,161 @@ var arr = [0,1,1,1,0,0,1];
 
 }*/
 
+
+
+
+
 function getItem(x, y) {
   return y * dim + x;
 }
 
 var dim = 3;
-var array = [0,0,1,1,1,0,1,1]
+var array = [1,-1,1]
+var count = 3;
+
+//var array = [3,3,3,3,4];
+
+console.log(maxLength(array, 1))
 
 function maxLength(a, mark) {
-  var count = 0;
+  var c = 0;
   var maxlen = 0;
   for (var i = 0; i < a.length; i++) {
-    if (a[i] === mark) {
-      count++;
+    if (a[i] === mark && a[i] !== '') {
+      c++;
     }
-    else if (maxlen < count) {
-      maxlen = count;
-      count = 0;
+    else if (maxlen < c) {
+      maxlen = c;
+      c = 0;
     }
-
   }
-  return (maxlen >= game.sqWinCount)? true: false;
+  return maxlen
+  /*if (maxlen == 0 || maxlen >= 2) {
+    return true;
+  }
+  else {
+    return false;
+  }*/
 }
 
-function checkCow(x, y, fun) {
-  var checkArr = [];
-  for (var i = 0; i < dim; i++) {
-      checkArr.push(array[getItem(x,i)]);
-  }
-  console.log(checkArr); // получил массив [1,1,1]
-  console.log(checkArr.length)
-  console.log(fun(checkArr, 1)) // функция подсчета дольжна бы возвратить 3
-  if (fun(checkArr, 1)) {// maxLength(arr, mark) работает нормально для массивов
-    console.log(true)
-  }
+
+
+
+
+
+function genArr() {
+    //var a = [0,0,0,0,1,1,0,1,1,1,0];
+    var a = []
+    for (var i = 0; i < 10; i++) {
+      a.push(Math.floor(Math.random()*2));
+    }
+
+    console.log(a)
+    console.log(maxLength(a,1));
+    console.log(streak(a,1))
 }
-checkCow(1,1,maxLength)
+//genArr()
+//console.log(maxLength(array,1))
+
+
+
+
+
+function streak(arr,mark) {
+    var i,
+        temp,
+        streak,
+        length = arr.length,
+        highestStreak = 0;
+
+    for(i = 0; i < length; i++) {
+        // check the value of the current entry against the last
+        if(temp != '' && temp == arr[i]) {
+            // it's a match
+            streak++;
+        } else {
+            // it's not a match, start streak from 1
+            streak = mark;
+        }
+
+        // set current letter for next time
+        temp = arr[i];
+
+        // set the master streak var
+        if(streak > highestStreak) {
+            highestStreak = streak;
+        }
+    }
+
+    return highestStreak;
+}
+
+var game = {
+    pos: null,
+    arrayField: new Array(),
+    item: null,
+    count: 0,
+    checkingArray: new Array(),
+    clicked: null,
+    sizeLength: null,
+    sqWinCount: null
+}
+
+function checkRow(x, y) {
+    for (var i = 0; i < game.sizeLength; i++) {
+        game.checkArr.push(game.arrayField[getItem(i, y)]);
+    }
+    return streak(game.checkArr, 1);
+    game.checkArr.length = 0;
+}
+
+
+// try
+
+function boo(a) {
+  return a || true
+}
+//console.log(boo(0));
+
+function gen() {
+  var r = Math.floor(Math.random()*10);
+  console.log(boo(r) + '|' + r)
+}
+//gen()
+
+
+
+
+
+function streak(arr) {
+    var i,
+        temp,
+        streak,
+        length = arr.length,
+        highestStreak = 0;
+
+    for(i = 0; i < length; i++) {
+        // check the value of the current entry against the last
+        if(temp == arr[i]) {
+            // it's a match
+            streak++;
+        } else {
+            // it's not a match, start streak from 1
+            streak = 1;
+        }
+
+        // set current letter for next time
+        temp = arr[i];
+
+        // set the master streak var
+        if(streak > highestStreak) {
+            highestStreak = streak;
+        }
+    }
+
+    return highestStreak;
+}
+
+
+
+//console.log(streak(array));
