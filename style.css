@@ -47,3 +47,7 @@ button {
   left: 30%;
   height: 100px;
 }
+
+h4, input {
+    display: block;
+}

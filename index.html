@@ -7,23 +7,21 @@
   </head>
   <body>
     <h1>Play</h1>
-    <form name='beginGame' class="" action="" method="post">
+    <form name='beginGame' id="gameform" class="" action="" method="post">
         <h4>Количество ячеек в поле игры</h4>
         <input type="text" name="size" value="">
         <!-- TODO: Переверстать без <br>, их почти никто нигде не использует -->
-        <br>
         <h4>Количество ячеек в строку(колонку) для победы</h4>
         <input type="text" name="winCount" value="">
-        <br>
         <!-- TODO: Отставить инлайновые обработчики! Только addEventListener! -->
-        <input type="button" name="name" value="Начать" onclick="begin()">
+        <input type="button" name="name" value="Начать" id="begin">
     </form>
     <div class="field">
 
     </div>
     <div class="finished">
         <h1>The winner is </h1>
-        <button type="button" name="button" onclick="reload()">new game</button>
+        <button type="button" name="button" id="reload">new game</button>
     </div>
     <!--
     TODO: Нет в целом ничего плохого в том, что у тебя скрипт в конце страницы,
