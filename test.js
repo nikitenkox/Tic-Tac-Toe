@@ -57,4 +57,54 @@ function check(y, x) {
     }
 }
 
-console.log(check(1, 1))
+//console.log(check(1, 1))
+
+
+var arr = [0,1,1,1,0,0,1];
+
+
+
+
+/*for (var i = 0; i < a.length; i++) {
+  if (a[i] === 1) {
+    c++;
+  }
+  else if (maxlen < c) {
+    maxlen = c;
+    c = 0;
+  }
+
+}*/
+
+
+
+function maxLength(a, mark) {
+  var count = 0;
+  var maxlen = 0;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] === mark) {
+      count++;
+    }
+    else if (maxlen < count) {
+      maxlen = count;
+      count = 0;
+    }
+
+  }
+  console.log(maxlen);
+  //return maxlen;
+}
+
+
+  var cc = []
+
+
+function cArr() {
+  cc.push(0)
+  cc.push(1)
+  cc.push(1)
+  cc.push(0)
+  cc.push(1)
+}
+cArr();
+maxLength(cc,1)
