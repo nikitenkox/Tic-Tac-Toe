@@ -1,7 +1,7 @@
 var dim = 3;
 var count = 3;
 var check = '';
-//var checkArr = [];
+var checkArr = [];
 
 var array = [-1,1,0,1,1,1,0,1,-1];
 function getItem(x, y) {
@@ -9,12 +9,11 @@ function getItem(x, y) {
 }
 
 
-
 function maxLength(a, mark) {
   var count = 0;
   var maxlen = 0;
   for (var i = 0; i < a.length; i++) {
-    if (a[i] == mark) {
+    if (a[i] === mark) {
       count++;
     }
     else if (maxlen < count) {
@@ -23,19 +22,20 @@ function maxLength(a, mark) {
     }
 
   }
-  return maxlen;
+  return (maxlen >= count)? true: false;
 }
 
 
 
 function checkCow(x, y) {
-  var checkArr = [];
+  //var checkArr = [];
   for (var i = 0; i < dim; i++) {
       checkArr.push(array[getItem(x,i)]);
   }
   console.log(checkArr); // получил массив [1,1,1]
+  console.log(checkArr.length)
   console.log(maxLength(checkArr, 1)) // функция подсчета дольжна бы возвратить 3
-  if (maxLength(checkArr, 1) == count) {// maxLength(arr, mark) работает нормально для массивов 
+  if (maxLength(checkArr, 1)) {// maxLength(arr, mark) работает нормально для массивов
     console.log(true)
   }
 }

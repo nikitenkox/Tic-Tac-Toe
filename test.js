@@ -76,7 +76,12 @@ var arr = [0,1,1,1,0,0,1];
 
 }*/
 
+function getItem(x, y) {
+  return y * dim + x;
+}
 
+var dim = 3;
+var array = [0,0,1,1,1,0,1,1]
 
 function maxLength(a, mark) {
   var count = 0;
@@ -91,20 +96,19 @@ function maxLength(a, mark) {
     }
 
   }
-  console.log(maxlen);
-  //return maxlen;
+  return (maxlen >= game.sqWinCount)? true: false;
 }
 
-
-  var cc = []
-
-
-function cArr() {
-  cc.push(0)
-  cc.push(1)
-  cc.push(1)
-  cc.push(0)
-  cc.push(1)
+function checkCow(x, y, fun) {
+  var checkArr = [];
+  for (var i = 0; i < dim; i++) {
+      checkArr.push(array[getItem(x,i)]);
+  }
+  console.log(checkArr); // получил массив [1,1,1]
+  console.log(checkArr.length)
+  console.log(fun(checkArr, 1)) // функция подсчета дольжна бы возвратить 3
+  if (fun(checkArr, 1)) {// maxLength(arr, mark) работает нормально для массивов
+    console.log(true)
+  }
 }
-cArr();
-maxLength(cc,1)
+checkCow(1,1,maxLength)
