@@ -9,8 +9,22 @@ document.addEventListener("DOMContentLoaded", function() {
         checkingArray: new Array(),
         clicked: null,
         sizeLength: null,
-        sqWinCount: null
+        sqWinCount: null,
+        winner: null
     }
+
+
+    game.checkStr = '';
+    game.checkArr = [];
+    game.win = false;
+
+
+
+
+
+
+
+
 
     var field = document.querySelector('.field'); // TODO: проще document.querySelector('.field'), найдет первый элемент по запрошенному селектору
     var form = document.getElementById('gameform'); // TODO: не сказал бы, что это хорошая практика. Лучше уже document.getElementsById.
@@ -54,10 +68,24 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         if (event.target.tagName == 'DIV') {
             game.clicked = event.target.id;
+            //alert(game.clicked);
             placeMark(game.clicked, true);
             renderView(game.arrayField);
         }
-        checkVictory(game.arrayField);
+        //checkVictory(game.arrayField);
+        check((game.clicked - game.clicked % game.sizeLength)/ game.sizeLength,
+        game.clicked % game.sizeLength, 'x');
+
+
+
+
+        if (game.win) {
+          field.style.display = 'none';
+          finisBox.style.display = 'block';
+          finisBox.getElementsByTagName('h1')[0].innerHTML += game.winner;
+        }
+
+
     });
 
     // создаем игровое поле и одномерный array игры
@@ -125,30 +153,82 @@ document.addEventListener("DOMContentLoaded", function() {
         game.checkingArray.push(new RegExp(t));
     }
 
-    // проверка победителя
-    function checkVictory(arr) {
-
-        var uWin = arr.toString().search(game.checkingArray[0]);
-        var cWin = arr.toString().search(game.checkingArray[1]);
-        var uWin1 = arr.toString().search(game.checkingArray[2]);
-        var cWin1 = arr.toString().search(game.checkingArray[3]);
-        if ((uWin > -1) && (uWin % (game.sizeLength * 2) < (game.sizeLength * 2 - (game.sqWinCount * 2 - 1))) || uWin1 > -1 || uWin2 > -1) {
-            field.style.display = 'none';
-            finisBox.style.display = 'block';
-            finisBox.getElementsByTagName('h1')[0].innerHTML += 'user'
-        } else if ((cWin > -1) && (cWin % (game.sizeLength * 2) < (game.sizeLength * 2 - (game.sqWinCount * 2 - 1))) || cWin1 > -1 || cWin2 > -1) {
-            field.style.display = 'none';
-            finisBox.style.display = 'block';
-            finisBox.getElementsByTagName('h1')[0].innerHTML += 'computer'
-        } else if (game.count > game.arrayField.length - 1) {
-            field.style.display = 'none';
-            finisBox.style.display = 'block';
-            finisBox.getElementsByTagName('h1')[0].innerHTML = 'draw'
-        }
-    }
 
     function reload() {
         location.reload(); // перезагружаем страницу
     }
+
+
+
+
+
+
+
+
+
+
+
+    function getCoords(y, x) {
+        for (var i = 0; i < game.sizeLength; i++) {
+            for (var j = 0; j < game.sizeLength; j++) {
+                if (y == i && x == j) {
+                    return game.arrayField[i * game.sizeLength + j];
+                }
+            }
+        }
+    }
+
+// проверка победителя
+    function check(y, x, mark) {
+      game.checkArr.length = 0;
+        for (var i = 0; i < game.sizeLength; i++) {
+            if (getCoords(y, i) == mark) {
+                game.checkStr += 'y';
+            } else {
+                game.checkStr += 'n';
+            }
+        }
+        game.checkArr.push(game.checkStr.search('y'.repeat(game.sqWinCount))); // game.checkStr.search('y'.repeat(c))
+        game.checkStr = '';
+        for (var i = 0; i < game.sizeLength; i++) {
+            if (getCoords(i, x) == mark) {
+                game.checkStr += 'y';
+            } else {
+                game.checkStr += 'n';
+            }
+        }
+        game.checkArr.push(game.checkStr.search('y'.repeat(game.sqWinCount))); // game.checkStr.search('y'.repeat(c))
+        game.checkStr = '';
+        for (var i = 0; i < game.sizeLength; i++) {
+            if (getCoords(i, i) == mark) {
+                game.checkStr += 'y';
+            } else {
+                game.checkStr += 'n'
+            }
+        }
+        game.checkArr.push(game.checkStr.search('y'.repeat(game.sqWinCount)));
+        game.checkStr = '';
+
+        for (var i = 0; i < game.checkArr.length; i++) {
+            if (game.checkArr[i] > -1) {
+                game.win = true;
+                break;
+            }
+        }
+        game.winner = mark;
+        return game.win;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 })

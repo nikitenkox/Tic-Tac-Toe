@@ -1,15 +1,17 @@
-var arr = ['0', 0, '', '0', 'x', 'x', 'x', 'x', 'x'];
-var c = 2;
-var dim = 3;
-var checkStr = '';
-var checkArr = [];
+
+var game = {}
+game.arrayField = ['0', 0, '', 'x', 'x', 'x', '', '', 'x'];
+game.sizeLength = 3;
+game.sqWinCount = 3
+game.checkStr = '';
+game.checkArr = [];
 
 
 function getCoords(y, x) {
-    for (var i = 0; i < dim; i++) {
-        for (var j = 0; j < dim; j++) {
+    for (var i = 0; i < game.sizeLength; i++) {
+        for (var j = 0; j < game.sizeLength; j++) {
             if (y == i && x == j) {
-                return arr[i * dim + j];
+                return game.arrayField[i * game.sizeLength + j];
             }
         }
     }
@@ -17,36 +19,36 @@ function getCoords(y, x) {
 
 
 function check(y, x) {
-    for (var i = 0; i < dim; i++) {
+    for (var i = 0; i < game.sizeLength; i++) {
         if (getCoords(y, i) == 'x') {
-            checkStr += 'y';
+            game.checkStr += 'y';
         } else {
-            checkStr += 'n';
+            game.checkStr += 'n';
         }
     }
-    checkArr.push(checkStr.search('y'.repeat(c))); // checkStr.search('y'.repeat(c))
-    checkStr = '';
-    for (var i = 0; i < dim; i++) {
+    game.checkArr.push(game.checkStr.search('y'.repeat(game.sqWinCount))); // game.checkStr.search('y'.repeat(c))
+    game.checkStr = '';
+    for (var i = 0; i < game.sizeLength; i++) {
         if (getCoords(i, x) == 'x') {
-            checkStr += 'y';
+            game.checkStr += 'y';
         } else {
-            checkStr += 'n';
+            game.checkStr += 'n';
         }
     }
-    checkArr.push(checkStr.search('y'.repeat(c))); // checkStr.search('y'.repeat(c))
-    checkStr = '';
-    for (var i = 0; i < dim; i++) {
+    game.checkArr.push(game.checkStr.search('y'.repeat(game.sqWinCount))); // game.checkStr.search('y'.repeat(c))
+    game.checkStr = '';
+    for (var i = 0; i < game.sizeLength; i++) {
         if (getCoords(i, i) == 'x') {
-            checkStr += 'y';
+            game.checkStr += 'y';
         } else {
-            checkStr += 'n'
+            game.checkStr += 'n'
         }
     }
-    checkArr.push(checkStr.search('y'.repeat(c)));
-    checkStr = '';
+    game.checkArr.push(game.checkStr.search('y'.repeat(game.sqWinCount)));
+    game.checkStr = '';
 
-    for (var i = 0; i < checkArr.length; i++) {
-        if (checkArr[i] > -1) {
+    for (var i = 0; i < game.checkArr.length; i++) {
+        if (game.checkArr[i] > -1) {
             return 'win';
             break;
         } else {
@@ -55,4 +57,4 @@ function check(y, x) {
     }
 }
 
-console.log(check(1, 2))
+console.log(check(1, 1))
