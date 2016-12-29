@@ -60,27 +60,21 @@ document.addEventListener("DOMContentLoaded", function() {
         game.checkingArray.length = 0;
         var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
         var y = game.clicked % game.sizeLength;
-        checkCow(y, x);
-        if (checkCow(y, x)) {
-            alert('win cow')
+        var x1 = (game.pos - game.pos % game.sizeLength) / game.sizeLength;;
+        var y1 = game.pos % game.sizeLength;
+        if (checkCow(y, x, 1) || checkRow(y, x, 1) || checkDiag1(y, x, 1) | checkDiag2(y, x, 1)) {
+            game.win = true;
+            game.winner = 'User';
+        } else if (checkCow(y1, x1, 0) || checkRow(y1, x1, 0) || checkDiag1(y1, x1, 0) || checkDiag2(y1, x1, 0)) {
+            game.win = true;
+            game.winner = 'Computer';
         }
-        game.checkingArray.length = 0;
-        checkRow(y, x)
-        if (checkRow(y, x)) {
-            alert('win row')
-        }
-        game.checkingArray.length = 0;
-        checkDiag1(y, x);
-        if (checkDiag1(y, x)) {
-            alert('dwins')
-        };
-        game.checkingArray.length = 0;
-        checkDiag2(y, x);
-        if (checkDiag2(y, x)) {
-            alert('d2')
+        if (game.win) {
+            field.style.display = 'none';
+            finisBox.style.display = 'block';
+            finisBox.getElementsByTagName('h1')[0].innerHTML += game.winner;
         }
     });
-
     // создаем игровое поле и одномерный array игры
     function renderField(size) {
         game.sizeLength = Math.sqrt(size);
@@ -146,56 +140,54 @@ document.addEventListener("DOMContentLoaded", function() {
         location.reload(); // перезагружаем страницу
     }
 
-// координаты 2d массива в 1d
+    // координаты 2d массива в 1d
     function getItem(x, y) {
         return y * game.sizeLength + x;
     }
 
-//определяем длинну максимальную длинну последовательного вхождения символа в массив
+    //определяем длинну максимальную длинну последовательного вхождения символа в массив
     function maxLength(a, mark) {
         var c = 0;
-        var maxlen = 0;
+        var maxlen = [];
+        var max;
         for (var i = 0; i < a.length; i++) {
             if (a[i] === mark) {
                 c++;
-            } else if (maxlen < c) {
-                maxlen = c;
+            }
+            maxlen.push(c);
+            if (a[i] !== mark) {
                 c = 0;
             }
         }
-        if (maxlen == 0 || maxlen >= game.sqWinCount) {
-            return true;
-        } else {
-            return false;
-        }
+        return (Math.max.apply(Math, maxlen) >= game.sqWinCount) ? true : false;
     }
-// проверка на наличие победителя
-    function checkRow(x, y) {
+    // проверка на наличие победителя
+    function checkRow(x, y, mark) {
         for (var i = 0; i < game.sizeLength; i++) {
             game.checkingArray.push(game.arrayField[getItem(i, y)]);
         }
-        return maxLength(game.checkingArray, 1);
+        return maxLength(game.checkingArray, mark);
     }
 
-    function checkCow(x, y) {
+    function checkCow(x, y, mark) {
         for (var i = 0; i < game.sizeLength; i++) {
             game.checkingArray.push(game.arrayField[getItem(x, i)]);
         }
-        return maxLength(game.checkingArray, 1);
+        return maxLength(game.checkingArray, mark);
     }
 
-    function checkDiag1(x, y) {
+    function checkDiag1(x, y, mark) {
         for (var i = 0; i < game.sizeLength; i++) {
             game.checkingArray.push(game.arrayField[getItem(i, i)]);
         }
-        return maxLength(game.checkingArray, 1);
+        return maxLength(game.checkingArray, mark);
     }
 
-    function checkDiag2(x, y) {
+    function checkDiag2(x, y, mark) {
         for (var i = 0; i < game.sizeLength; i++) {
             game.checkingArray.push(game.arrayField[getItem(game.sizeLength - i - 1, i)]);
         }
-        return maxLength(game.checkingArray, 1);
+        return maxLength(game.checkingArray, mark);
     }
 
 })
