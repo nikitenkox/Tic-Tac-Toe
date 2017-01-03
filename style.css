@@ -6,6 +6,10 @@
 
 }
 
+h1 {
+  text-align: center;
+}
+
 tr, td {
   border: 1px solid orange;
   width: 100px;
@@ -34,6 +38,7 @@ tr, td {
 .finished {
   background: deeppink;
   position: absolute;
+  padding: 20px;
   display: none;
   color: white;
   font-size: 2em;
@@ -42,9 +47,9 @@ tr, td {
 }
 
 button {
-  width: 200px;
+  width: 50%;
+  left: 25%;
   position: relative;
-  left: 30%;
   height: 100px;
 }
 

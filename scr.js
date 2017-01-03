@@ -2,14 +2,14 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     var game = {
-        pos: null,
-        arrayField: new Array(),
-        item: null,
-        count: 0,
-        checkingArray: new Array(),
-        clicked: null,
-        sizeLength: null,
-        sqWinCount: null
+    pos: null,
+    arrayField: new Array(),
+    item: null,
+    count: 0,
+    checkingArray: new Array(),
+    clicked: null,
+    sizeLength: null,
+    sqWinCount: null
     }
 
     var field = document.querySelector('.field'); // TODO: проще document.querySelector('.field'), найдет первый элемент по запрошенному селектору
@@ -62,10 +62,30 @@ document.addEventListener("DOMContentLoaded", function() {
         var y = game.clicked % game.sizeLength;
         var x1 = (game.pos - game.pos % game.sizeLength) / game.sizeLength;;
         var y1 = game.pos % game.sizeLength;
-        if (checkCow(y, x, 1) || checkRow(y, x, 1) || checkDiag1(y, x, 1) | checkDiag2(y, x, 1)) {
+
+        var cowU = checkCow(y, x, 1);
+        game.checkingArray.length = 0;
+        var rowU = checkRow(y, x, 1)
+        game.checkingArray.length = 0;
+        var diag1U = checkDiag1(y, x, 1);
+        game.checkingArray.length = 0;
+        var diag2U = checkDiag2(y, x, 1);
+        game.checkingArray.length = 0;
+
+        var cowC = checkCow(y1, x1, 0);
+        game.checkingArray.length = 0;
+        var rowC = checkRow(y1, x1, 0)
+        game.checkingArray.length = 0;
+        var diag1C = checkDiag1(y1, x1, 0);
+        game.checkingArray.length = 0;
+        var diag2C = checkDiag2(y1, x1, 0);
+        game.checkingArray.length = 0;
+
+        if (cowU || rowU || diag1U || diag2U) {
             game.win = true;
             game.winner = 'User';
-        } else if (checkCow(y1, x1, 0) || checkRow(y1, x1, 0) || checkDiag1(y1, x1, 0) || checkDiag2(y1, x1, 0)) {
+        }
+        else if (cowC || rowC || diag1C || diag2C) {
             game.win = true;
             game.winner = 'Computer';
         }
