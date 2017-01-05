@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var x1 = (game.pos - game.pos % game.sizeLength) / game.sizeLength;;
         var y1 = game.pos % game.sizeLength;
 
-        var cowU = checkCow(y, x, 1);
+        var colU = checkCol(y, x, 1);
         game.checkingArray.length = 0;
         var rowU = checkRow(y, x, 1)
         game.checkingArray.length = 0;
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var diag2U = checkDiag2(y, x, 1);
         game.checkingArray.length = 0;
 
-        var cowC = checkCow(y1, x1, 0);
+        var colC = checkCol(y1, x1, 0);
         game.checkingArray.length = 0;
         var rowC = checkRow(y1, x1, 0)
         game.checkingArray.length = 0;
@@ -81,11 +81,11 @@ document.addEventListener("DOMContentLoaded", function() {
         var diag2C = checkDiag2(y1, x1, 0);
         game.checkingArray.length = 0;
 
-        if (cowU || rowU || diag1U || diag2U) {
+        if (colU || rowU || diag1U || diag2U) {
             game.win = true;
             game.winner = 'User';
         }
-        else if (cowC || rowC || diag1C || diag2C) {
+        else if (colC || rowC || diag1C || diag2C) {
             game.win = true;
             game.winner = 'Computer';
         }
@@ -97,15 +97,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     // создаем игровое поле и одномерный array игры
     function renderField(size) {
-        game.sizeLength = Math.sqrt(size);
-        field.style.width = Math.sqrt(size) * 102 + 'px';
-        for (var i = 0; i < size; i++) {
+        game.sizeLength = size;
+        field.style.width = size * 102 + 'px';
+        for (var i = 0; i < Math.pow(size, 2); i++) {
+            game.arrayField.push(-1);
             game.item = document.createElement('div');
             game.item.classList.add('item');
             field.appendChild(game.item);
-        }
-        for (var j = 0; j < size; j++) {
-            game.arrayField.push(-1);
         }
     }
 
@@ -189,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return maxLength(game.checkingArray, mark);
     }
 
-    function checkCow(x, y, mark) {
+    function checkCol(x, y, mark) {
         for (var i = 0; i < game.sizeLength; i++) {
             game.checkingArray.push(game.arrayField[getItem(x, i)]);
         }
