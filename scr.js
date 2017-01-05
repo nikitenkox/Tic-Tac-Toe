@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", function() {
     checkingArray: new Array(),
     clicked: null,
     sizeLength: null,
-    sqWinCount: null
+    sqWinCount: null,
+    formedItems: null
     }
 
     var field = document.querySelector('.field'); // TODO: проще document.querySelector('.field'), найдет первый элемент по запрошенному селектору
@@ -40,14 +41,14 @@ document.addEventListener("DOMContentLoaded", function() {
         //прятаем форму, показываем поле
         form.style.display = 'none';
         field.style.display = 'block';
+        game.formedItems = document.getElementsByClassName('item'); // TODO: А ведь в этот момент этих ячеек в DOM еще нет.
     }
 
-    var formedItems = document.getElementsByClassName('item'); // TODO: А ведь в этот момент этих ячеек в DOM еще нет.
 
     // делаем делегацию событий при клике на ячейку
     field.addEventListener('click', function(event) {
-        for (var u = 0; u < formedItems.length; u++) {
-            formedItems[u].id = u;
+        for (var u = 0; u < game.formedItems.length; u++) {
+            game.formedItems[u].id = u;
         }
         if (isLastMove(game.count)) {
             placeMark(game.arrayField.indexOf(-1), false);
@@ -124,14 +125,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // заполняем ячейки
     function renderView(arr) {
-        for (var k = 0; k < arr.length; k++) {
-            if (arr[k] == 1) {
-                formedItems[k].innerHTML = 'x'
-            } else if (arr[k] == 0) {
-                formedItems[k].innerHTML = '0';
-            }
-
-        }
+      game.formedItems[game.clicked].innerHTML = 'x';
+      game.formedItems[game.pos].innerHTML = '0';
     }
 
     // проверяем, остался один ход, или нет
