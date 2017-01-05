@@ -8,6 +8,18 @@ document.addEventListener("DOMContentLoaded", function() {
     count: 0,
     checkingArray: new Array(),
     clicked: null,
+    players: {
+        user: 'User',
+        computer: 'Computer'
+    },
+    marks: {
+        user: 1,
+        computer: 0
+    },
+    view: {
+        user: 'x',
+        compiter: '0'
+    },
     sizeLength: null,
     sqWinCount: null,
     formedItems: null
@@ -25,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function() {
     field.style.display = 'none';
 
     //начало игры
-    function begin() {
+    function begin(event) {
+        event.preventDefault();
         /**
          * TODO: Хранить настройки и состояние игры в виде обьекта game = {
          *   fieldSize: 3,
@@ -64,31 +77,31 @@ document.addEventListener("DOMContentLoaded", function() {
         var x1 = (game.pos - game.pos % game.sizeLength) / game.sizeLength;;
         var y1 = game.pos % game.sizeLength;
 
-        var colU = checkCol(y, x, 1);
+        var colU = checkCol(y, x, game.marks.user);
+        var rowU = checkRow(y, x, game.marks.user)
+        var diag1U = checkDiag1(y, x, game.marks.user);
         game.checkingArray.length = 0;
-        var rowU = checkRow(y, x, 1)
-        game.checkingArray.length = 0;
-        var diag1U = checkDiag1(y, x, 1);
-        game.checkingArray.length = 0;
-        var diag2U = checkDiag2(y, x, 1);
+        var diag2U = checkDiag2(y, x, game.marks.user);
         game.checkingArray.length = 0;
 
-        var colC = checkCol(y1, x1, 0);
+        var colC = checkCol(y1, x1, game.marks.computer);
+        var rowC = checkRow(y1, x1, game.marks.computer)
+        var diag1C = checkDiag1(y1, x1, game.marks.computer);
         game.checkingArray.length = 0;
-        var rowC = checkRow(y1, x1, 0)
-        game.checkingArray.length = 0;
-        var diag1C = checkDiag1(y1, x1, 0);
-        game.checkingArray.length = 0;
-        var diag2C = checkDiag2(y1, x1, 0);
+        var diag2C = checkDiag2(y1, x1, game.marks.computer);
         game.checkingArray.length = 0;
 
         if (colU || rowU || diag1U || diag2U) {
             game.win = true;
-            game.winner = 'User';
+            game.winner = game.players.user;
         }
         else if (colC || rowC || diag1C || diag2C) {
             game.win = true;
-            game.winner = 'Computer';
+            game.winner = game.players.computer;
+        }
+        else if (game.count > Math.pow(game.sizeLength,2) - 1) {
+            alert('draw');
+            reload();
         }
         if (game.win) {
             field.style.display = 'none';
@@ -174,19 +187,22 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         return (Math.max.apply(Math, maxlen) >= game.sqWinCount) ? true : false;
     }
+
     // проверка на наличие победителя
     function checkRow(x, y, mark) {
+        var arr = [];
         for (var i = 0; i < game.sizeLength; i++) {
-            game.checkingArray.push(game.arrayField[getItem(i, y)]);
+            arr.push(game.arrayField[getItem(i, y)]);
         }
-        return maxLength(game.checkingArray, mark);
+        return maxLength(arr, mark);
     }
 
     function checkCol(x, y, mark) {
+        var arr = [];
         for (var i = 0; i < game.sizeLength; i++) {
-            game.checkingArray.push(game.arrayField[getItem(x, i)]);
+            arr.push(game.arrayField[getItem(x, i)]);
         }
-        return maxLength(game.checkingArray, mark);
+        return maxLength(arr, mark);
     }
 
     function checkDiag1(x, y, mark) {
@@ -197,10 +213,28 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function checkDiag2(x, y, mark) {
-        for (var i = 0; i < game.sizeLength; i++) {
-            game.checkingArray.push(game.arrayField[getItem(game.sizeLength - i - 1, i)]);
+      //console.log(game.clicked);
+      var arr = [];
+      var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
+      var y = game.clicked % game.sizeLength;
+      console.log('x = ' + y + '|||' + x);
+        for (var i = y; i < game.sizeLength; i++) {
+            arr.push(game.arrayField[getItem(i, game.sizeLength - i - 1)]);
         }
-        return maxLength(game.checkingArray, mark);
+        console.log(arr);
+        return maxLength(arr, mark);
     }
+
+    /*function checkDiag2(x, y, mark) {
+      //console.log(game.clicked);
+      var arr = [];
+      var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
+      var y = game.clicked % game.sizeLength;
+      console.log('x = ' + y + '|||' + x);
+        for (var i = y; i < game.sizeLength; i++) {
+            arr.push(game.arrayField[getItem(game.sizeLength - i - 1, i)]);
+        }
+        return maxLength(arr, mark);
+    }*/
 
 })
