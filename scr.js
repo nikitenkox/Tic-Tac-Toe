@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function() {
         arrayField: new Array(),
         item: null,
         count: 0,
-        checkingArray: new Array(),
         clicked: null,
         players: {
             user: 'User',
@@ -71,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
             placeMark(game.clicked, true);
             renderView(game.arrayField);
         }
-        game.checkingArray.length = 0;
+
         var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
         var y = game.clicked % game.sizeLength;
         var x1 = (game.pos - game.pos % game.sizeLength) / game.sizeLength;;
@@ -80,16 +79,12 @@ document.addEventListener("DOMContentLoaded", function() {
         var colU = checkCol(y, x, game.marks.user);
         var rowU = checkRow(y, x, game.marks.user)
         var diag1U = checkDiag1(y, x, game.marks.user);
-        game.checkingArray.length = 0;
         var diag2U = checkDiag2(y, x, game.marks.user);
-        game.checkingArray.length = 0;
 
         var colC = checkCol(y1, x1, game.marks.computer);
         var rowC = checkRow(y1, x1, game.marks.computer)
         var diag1C = checkDiag1(y1, x1, game.marks.computer);
-        game.checkingArray.length = 0;
-        var diag2C = false // checkDiag2(y1, x1, game.marks.computer);
-        game.checkingArray.length = 0;
+        var diag2C = checkDiag2(y1, x1, game.marks.computer);
 
         if (colU || rowU || diag1U || diag2U) {
             game.win = true;
@@ -159,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function() {
         game.sqWinCount = n;
     }
 
-
     function reload() {
         location.reload(); // перезагружаем страницу
     }
@@ -207,19 +201,22 @@ document.addEventListener("DOMContentLoaded", function() {
         var arr = [];
         var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
         var y = game.clicked % game.sizeLength;
-        //console.log(game.clicked);
-        //console.log('x = ' + y + '||| y = ' + x);
+        var dif = y - x;
+        var rdif = x - y;
         if (x == y) {
             for (var i = 0; i < game.sizeLength; i++) {
                 arr.push(game.arrayField[getItem(i, i)]);
             }
-            //console.log(arr);
         }
         else if (y >= x) {
-            console.log('x>=y');
+            for (var i = dif; i < game.sizeLength; i++) {
+                arr.push(game.arrayField[getItem(i, (i - dif))]);
+            }
         }
         else {
-            console.log('no');
+            for (var i = 0; i < (game.sizeLength - rdif); i++) {
+                arr.push(game.arrayField[getItem(i, (i + rdif))]);
+            }
         }
         return maxLength(arr, mark);
     }
@@ -229,10 +226,6 @@ document.addEventListener("DOMContentLoaded", function() {
         var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
         var y = game.clicked % game.sizeLength;
         var max = x + y;
-        //console.log('x = ' + y + '||| y = ' + x/* (game.sizeLength-x-1)*/);
-        //console.log('xy < size ' + ((x + y)<(game.sizeLength - 1)));
-        //console.log('from x0 = 0; y0 = ' +(x+y) );
-        //console.log('to xn = ' + (x+y) + ' yn = 0');
         if ((game.sizeLength - x - 1) == y) {
             for (var i = 0; i < game.sizeLength; i++) {
                 arr.push(game.arrayField[getItem(game.sizeLength - i - 1, i)]);
