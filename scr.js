@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         view: {
             user: 'x',
-            compiter: '0'
+            computer: '0'
         },
         sizeLength: null,
         sqWinCount: null,
@@ -70,38 +70,43 @@ document.addEventListener("DOMContentLoaded", function() {
             placeMark(game.clicked, true);
             renderView(game.arrayField);
         }
-
-        var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
-        var y = game.clicked % game.sizeLength;
-        var x1 = (game.pos - game.pos % game.sizeLength) / game.sizeLength;;
-        var y1 = game.pos % game.sizeLength;
-
-        var colU = checkCol(y, x, game.marks.user);
-        var rowU = checkRow(y, x, game.marks.user)
-        var diag1U = checkDiag1(y, x, game.marks.user);
-        var diag2U = checkDiag2(y, x, game.marks.user);
-
-        var colC = checkCol(y1, x1, game.marks.computer);
-        var rowC = checkRow(y1, x1, game.marks.computer)
-        var diag1C = checkDiag1(y1, x1, game.marks.computer);
-        var diag2C = checkDiag2(y1, x1, game.marks.computer);
-
-        if (colU || rowU || diag1U || diag2U) {
-            game.win = true;
-            game.winner = game.players.user;
-        } else if (colC || rowC || diag1C || diag2C) {
-            game.win = true;
-            game.winner = game.players.computer;
-        } else if (game.count > Math.pow(game.sizeLength, 2) - 1) {
-            alert('draw');
-            reload();
-        }
-        if (game.win) {
-            field.style.display = 'none';
-            finisBox.style.display = 'block';
-            finisBox.getElementsByTagName('h1')[0].innerHTML += game.winner;
-        }
+        getWinner();
     });
+
+// определеление победителя
+    function getWinner() {
+      var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
+      var y = game.clicked % game.sizeLength;
+      var x1 = (game.pos - game.pos % game.sizeLength) / game.sizeLength;
+      var y1 = game.pos % game.sizeLength;
+
+      var colU = checkCol(y, x, game.marks.user);
+      var rowU = checkRow(y, x, game.marks.user);
+      var diag1U = checkDiag1(y, x, game.marks.user);
+      var diag2U = checkDiag2(y, x, game.marks.user);
+
+      var colC = checkCol(y1, x1, game.marks.computer);
+      var rowC = checkRow(y1, x1, game.marks.computer);
+      var diag1C = checkDiag1(y1, x1, game.marks.computer);
+      var diag2C = checkDiag2(y1, x1, game.marks.computer);
+
+      if (colU || rowU || diag1U || diag2U) {
+          game.win = true;
+          game.winner = game.players.user;
+      } else if (colC || rowC || diag1C || diag2C) {
+          game.win = true;
+          game.winner = game.players.computer;
+      } else if (game.count > Math.pow(game.sizeLength, 2) - 1) {
+          alert('draw');
+          reload();
+      }
+      if (game.win) {
+          field.style.display = 'none';
+          finisBox.style.display = 'block';
+          finisBox.getElementsByTagName('h1')[0].innerHTML += game.winner;
+      }
+    }
+
     // создаем игровое поле и одномерный array игры
     function renderField(size) {
         game.sizeLength = size;
@@ -131,8 +136,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // заполняем ячейки
     function renderView(arr) {
-        game.formedItems[game.clicked].innerHTML = 'x';
-        game.formedItems[game.pos].innerHTML = '0';
+        game.formedItems[game.clicked].innerHTML = game.view.user;
+        game.formedItems[game.pos].innerHTML = game.view.computer;
     }
 
     // проверяем, остался один ход, или нет
@@ -232,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         } else if ((x + y) < (game.sizeLength - 1)) {
             for (var i = 0; i <= max; i++) {
-                arr.push(game.arrayField[getItem(i, (max - i))])
+                arr.push(game.arrayField[getItem(i, (max - i))]);
             }
         } else {
             for (var i = ((max % game.sizeLength) + 1); i <= game.sizeLength - 1; i++) {
