@@ -2,27 +2,27 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     var game = {
-    pos: null,
-    arrayField: new Array(),
-    item: null,
-    count: 0,
-    checkingArray: new Array(),
-    clicked: null,
-    players: {
-        user: 'User',
-        computer: 'Computer'
-    },
-    marks: {
-        user: 1,
-        computer: 0
-    },
-    view: {
-        user: 'x',
-        compiter: '0'
-    },
-    sizeLength: null,
-    sqWinCount: null,
-    formedItems: null
+        pos: null,
+        arrayField: new Array(),
+        item: null,
+        count: 0,
+        checkingArray: new Array(),
+        clicked: null,
+        players: {
+            user: 'User',
+            computer: 'Computer'
+        },
+        marks: {
+            user: 1,
+            computer: 0
+        },
+        view: {
+            user: 'x',
+            compiter: '0'
+        },
+        sizeLength: null,
+        sqWinCount: null,
+        formedItems: null
     }
 
     var field = document.querySelector('.field'); // TODO: проще document.querySelector('.field'), найдет первый элемент по запрошенному селектору
@@ -88,18 +88,16 @@ document.addEventListener("DOMContentLoaded", function() {
         var rowC = checkRow(y1, x1, game.marks.computer)
         var diag1C = checkDiag1(y1, x1, game.marks.computer);
         game.checkingArray.length = 0;
-        var diag2C = checkDiag2(y1, x1, game.marks.computer);
+        var diag2C = false // checkDiag2(y1, x1, game.marks.computer);
         game.checkingArray.length = 0;
 
         if (colU || rowU || diag1U || diag2U) {
             game.win = true;
             game.winner = game.players.user;
-        }
-        else if (colC || rowC || diag1C || diag2C) {
+        } else if (colC || rowC || diag1C || diag2C) {
             game.win = true;
             game.winner = game.players.computer;
-        }
-        else if (game.count > Math.pow(game.sizeLength,2) - 1) {
+        } else if (game.count > Math.pow(game.sizeLength, 2) - 1) {
             alert('draw');
             reload();
         }
@@ -138,8 +136,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // заполняем ячейки
     function renderView(arr) {
-      game.formedItems[game.clicked].innerHTML = 'x';
-      game.formedItems[game.pos].innerHTML = '0';
+        game.formedItems[game.clicked].innerHTML = 'x';
+        game.formedItems[game.pos].innerHTML = '0';
     }
 
     // проверяем, остался один ход, или нет
@@ -206,35 +204,48 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function checkDiag1(x, y, mark) {
-        for (var i = 0; i < game.sizeLength; i++) {
-            game.checkingArray.push(game.arrayField[getItem(i, i)]);
+        var arr = [];
+        var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
+        var y = game.clicked % game.sizeLength;
+        //console.log(game.clicked);
+        //console.log('x = ' + y + '||| y = ' + x);
+        if (x == y) {
+            for (var i = 0; i < game.sizeLength; i++) {
+                arr.push(game.arrayField[getItem(i, i)]);
+            }
+            //console.log(arr);
         }
-        return maxLength(game.checkingArray, mark);
+        else if (y >= x) {
+            console.log('x>=y');
+        }
+        else {
+            console.log('no');
+        }
+        return maxLength(arr, mark);
     }
 
     function checkDiag2(x, y, mark) {
-      //console.log(game.clicked);
-      var arr = [];
-      var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
-      var y = game.clicked % game.sizeLength;
-      console.log('x = ' + y + '|||' + x);
-        for (var i = y; i < game.sizeLength; i++) {
-            arr.push(game.arrayField[getItem(i, game.sizeLength - i - 1)]);
+        var arr = [];
+        var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
+        var y = game.clicked % game.sizeLength;
+        var max = x + y;
+        //console.log('x = ' + y + '||| y = ' + x/* (game.sizeLength-x-1)*/);
+        //console.log('xy < size ' + ((x + y)<(game.sizeLength - 1)));
+        //console.log('from x0 = 0; y0 = ' +(x+y) );
+        //console.log('to xn = ' + (x+y) + ' yn = 0');
+        if ((game.sizeLength - x - 1) == y) {
+            for (var i = 0; i < game.sizeLength; i++) {
+                arr.push(game.arrayField[getItem(game.sizeLength - i - 1, i)]);
+            }
+        } else if ((x + y) < (game.sizeLength - 1)) {
+            for (var i = 0; i <= max; i++) {
+                arr.push(game.arrayField[getItem(i, (max - i))])
+            }
+        } else {
+            for (var i = ((max % game.sizeLength) + 1); i <= game.sizeLength - 1; i++) {
+                arr.push(game.arrayField[getItem(i, (max - i))]);
+            }
         }
-        console.log(arr);
         return maxLength(arr, mark);
     }
-
-    /*function checkDiag2(x, y, mark) {
-      //console.log(game.clicked);
-      var arr = [];
-      var x = (game.clicked - game.clicked % game.sizeLength) / game.sizeLength;
-      var y = game.clicked % game.sizeLength;
-      console.log('x = ' + y + '|||' + x);
-        for (var i = y; i < game.sizeLength; i++) {
-            arr.push(game.arrayField[getItem(game.sizeLength - i - 1, i)]);
-        }
-        return maxLength(arr, mark);
-    }*/
-
 })
