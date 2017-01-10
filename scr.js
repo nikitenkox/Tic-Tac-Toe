@@ -36,10 +36,13 @@ document.addEventListener("DOMContentLoaded", () => {
          *   ...
          * }
          */
+
+        // определяем опции игры
+        setGameOptions(document.querySelector("form").size.value, document.querySelector("form").winCount.value);
+
         // создаем поле
-        renderField(document.beginGame.size.value);
-        //указываем количество клеточек для победы
-        squaresForWin(document.beginGame.winCount.value);
+        renderField(game.sizeLength);
+
         //прятаем форму, показываем поле
         form.style.display = 'none';
         field.style.display = 'block';
@@ -48,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // создаем игровое поле и одномерный array игры
     function renderField(size) {
-        game.sizeLength = size;
         field.style.width = size * 102 + 'px';
         for (let i = 0; i < Math.pow(size, 2); i++) {
             game.arrayField.push(game.marks.empty);
@@ -56,6 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
             game.item.classList.add('item');
             field.appendChild(game.item);
         }
+    }
+
+    // определение опций игры
+    function setGameOptions(size, sqWinCount) {
+        game.sizeLength = size;
+        game.sqWinCount = sqWinCount;
     }
 
     // делаем ход
@@ -92,11 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
      * TODO: Эта проверка на победителя интересна, но не динамична и очень зависит от конкретной реализации метода toString() и search()
      * Переделать на действительно алгоримическое определение победителя. Используй циклы и логику
      */
-
-    //определяем количество ячеек для победы
-    function squaresForWin(n) {
-        game.sqWinCount = n;
-    }
 
     function reload() {
         location.reload(); // перезагружаем страницу
