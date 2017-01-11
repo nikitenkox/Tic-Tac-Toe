@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //начало игры
     function begin(event) {
         event.preventDefault();
+        let gameOptionsForm = document.querySelector("form");
         /**
          * TODO: Хранить настройки и состояние игры в виде обьекта game = {
          *   fieldSize: 3,
@@ -38,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
          */
 
         // определяем опции игры
-        setGameOptions(document.querySelector("form").size.value, document.querySelector("form").winCount.value);
+        setGameOptions(gameOptionsForm);
 
         // создаем поле
         renderField(game.sizeLength);
@@ -61,9 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // определение опций игры
-    function setGameOptions(size, sqWinCount) {
-        game.sizeLength = size;
-        game.sqWinCount = sqWinCount;
+    function setGameOptions(form) {
+        game.sizeLength = form.size.value;
+        game.sqWinCount = form.winCount.value;
     }
 
     // делаем ход
