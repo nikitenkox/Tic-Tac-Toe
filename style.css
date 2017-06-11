@@ -1,19 +1,10 @@
-/* TODO: Соблюдай однообразие стиля кода! Отступы и т.д */
-
 * {
   margin: 0px;
   padding: 0px;
-
 }
 
 h1 {
   text-align: center;
-}
-
-tr, td {
-  border: 1px solid orange;
-  width: 100px;
-  height: 100px;
 }
 
 .field {
@@ -37,13 +28,17 @@ tr, td {
 
 .finished {
   background: deeppink;
-  position: absolute;
+  position: relative;
+  width: 400px;
   padding: 20px;
   display: none;
   color: white;
   font-size: 2em;
-  top: 100px;
-  left: 400px;
+  margin: 0 auto;
+}
+
+h3 {
+    text-align: center;
 }
 
 button {
